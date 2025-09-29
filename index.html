@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mac OS X Cheetah</title>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    function updateClock() {
+      const clock = document.querySelector('.clock');
+      const now = new Date();
+      let hours = now.getHours();
+      let minutes = now.getMinutes();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      clock.textContent = hours + ':' + minutes + ' ' + ampm;
+    }
+    setInterval(updateClock, 1000);
+    window.onload = updateClock;
+
+    window.onload = function () {
+      updateClock();
+
+      const windowEl = document.querySelector('.window');
+      const titleBar = windowEl.querySelector('.title-bar');
+      let offsetX, offsetY, isDown = false;
+
+      titleBar.addEventListener('mousedown', (e) => {
+        isDown = true;
+        offsetX = e.clientX - windowEl.offsetLeft;
+        offsetY = e.clientY - windowEl.offsetTop;
+        windowEl.style.zIndex = 10;
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDown = false;
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        windowEl.style.left = (e.clientX - offsetX) + 'px';
+        windowEl.style.top = (e.clientY - offsetY) + 'px';
+      });
+
+      document.querySelectorAll('.desktop-icons .icon').forEach(icon => {
+        icon.addEventListener('click', () => {
+          document.querySelectorAll('.desktop-icons .icon').forEach(i => i.classList.remove('selected'));
+          icon.classList.add('selected');
+        });
+      });
+    }
+  </script>
+</head>
+<body>
+  <div class="desktop">
+    <div class="menu-bar">
+      <div class="apple-logo"></div>
+      <div class="menu-items">
+        <span>Finder</span>
+        <span>File</span>
+        <span>Edit</span>
+        <span>View</span>
+        <span>Go</span>
+        <span>Window</span>
+        <span>Help</span>
+      </div>
+      <div class="clock">12:00 PM</div>
+    </div>
+
+    <div class="desktop-icons">
+      <div class="icon">
+        <img src="https://raw.githubusercontent.com/B00merang-Artwork/Mac-OS-X-Cheetah/refs/heads/master/48x48/status/hdd.png" alt="HD" />
+        <span>Macintosh HD</span>
+      </div>
+      <div class="icon">
+        <img src="https://github.com/B00merang-Artwork/Mac-OS-X-Cheetah/blob/master/16x16/places/folder.png?raw=true" alt="Folder" />
+        <span>Projects</span>
+      </div>
+    </div>
+
+    <div class="dock">
+      <div class="dock-icon">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Blue_folder_icon.svg" alt="Finder" />
+      </div>
+      <div class="dock-icon">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Globe_icon.svg" alt="Browser" />
+      </div>
+      <div class="dock-icon">
+        <img src="https://raw.githubusercontent.com/B00merang-Project/Mac-OS-X-Cheetah/refs/heads/master/cinnamon/expo-scale-assets/trash.svg" alt="Trash" />
+      </div>
+    </div>
+
+    <div class="window" style="position: absolute; top: 100px; left: 100px;">
+      <div class="title-bar">
+        <div class="buttons">
+          <div class="button"></div>
+          <div class="button yellow"></div>
+          <div class="button green"></div>
+        </div>
+        <div class="title">About This Site</div>
+      </div>
+      <div class="content">
+        <h2>This Is A Window</h2>
+        <p>This Is A Test Window To Test Dragging</p>
+        <p>Does It <a href="#">Work?</a> Or <a href="#">Does It Not?</a>.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
